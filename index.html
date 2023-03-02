@@ -1,0 +1,192 @@
+<!DOCTYPE html> 
+
+<html lang="en"> 
+
+<head> 
+
+    <meta charset="UTF-8"> 
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+    <title>Exercicio</title> 
+
+</head> 
+
+<body> 
+
+ 
+ 
+
+    <input type="button" value="Buscar Clientes" onclick="buscarClientes()"/>
+    <input type="button" value="Buscar Matérias" onclick="buscarMaterias()"/>
+
+    <table border="1">
+        <tr>
+            <td>Nome</td>
+            <td>Endereço</td>
+            <td>Telefone</td>
+        </tr>
+        <tbody id="lista">
+            
+        </tbody>
+    </table><br>
+ 
+    Veículo: <select id="veiculo" onclick="buscarVeiculos()">
+
+    </select><br>
+
+    <table border="1">
+        <tr>
+            <td>Matérias</td>
+        </tr>
+        <tbody id="listaMateria">
+            
+        </tbody>
+    </table>
+    
+    <hr> 
+
+    <h3>Endereço</h3> 
+
+    Cep: <input type="text" id="cep" onblur="buscarCep(this.value)" /><br> 
+
+    Rua: <input type="text" id="rua" /><br>
+
+    Complemento: <input type="text" id="complemento" /><br>
+
+    Bairro: <input type="text" id="bairro" /><br>
+
+    Cidade: <input type="text" id="cidade" /><br>
+
+    UF: <input type="text" id="uf" /><br>
+
+    IBGE: <input type="text" id="ibge" /><br>
+
+    GIA: <input type="text" id="gia" /><br>
+
+    DDD: <input type="text" id="ddd" /><br>
+
+    siafi: <input type="text" id="siafi" /><br>
+ 
+
+</body> 
+
+<script> 
+
+    function buscarClientes(){ 
+
+        fetch("https://demo5741962.mockable.io/exercicio2") 
+
+        .then(response => response.json()) 
+
+        .then(data => criarListaClientes(data)) 
+
+        .catch(error => alert(error)) 
+
+    } 
+
+    function buscarVeiculos(){ 
+
+    fetch("https://demo5741962.mockable.io/exercicio3") 
+
+.then(response => response.json()) 
+
+.then(data => criarComboVeiculos(data)) 
+
+.catch(error => alert(error)) 
+
+} 
+
+function buscarMaterias(){ 
+
+fetch("https://demo5741962.mockable.io/exercicio4") 
+
+.then(response => response.json()) 
+
+.then(data => criarListaMaterias(data)) 
+
+.catch(error => alert(error)) 
+
+} 
+
+ let jaRodou = false;
+ 
+
+    function criarListaClientes(data){ 
+        for(let i = 0; i < data.length; i++){ 
+
+            let item = `<tr>
+            <td>${data[i].nome}</td>
+            <td>${data[i].endereco}</td>
+            <td>${data[i].telefone}</td>
+        </tr>`;
+
+
+            document.getElementById("lista").innerHTML += item; 
+
+        } 
+
+    } 
+
+    function criarComboVeiculos(data){ 
+        if(jaRodou == false) {
+        for(let i = 0; i < data.length; i++){ 
+
+            let item = `<option>${data[i]}</option>`;
+
+
+            document.getElementById("veiculo").innerHTML += item; 
+            jaRodou = true;
+        } }
+
+    } 
+ 
+    function criarListaMaterias(data){ 
+        for(let i = 0; i < data.length; i++){ 
+
+            let item = `<tr>
+            <td>${data[i]}</td>
+        </tr>`;
+
+
+            document.getElementById("listaMateria").innerHTML += item; 
+
+        } 
+
+    }
+
+    function buscarCep(cep){ 
+
+        fetch(`https://viacep.com.br/ws/${cep}/json`) 
+
+        .then(response => response.json()) 
+
+        .then(data => preencherCep(data)) 
+
+        .catch(error => alert(error)) 
+
+    } 
+
+ 
+ 
+
+    function preencherCep(data){ 
+
+        document.getElementById("rua").value = data.logradouro;
+        document.getElementById("bairro").value = data.bairro;
+        document.getElementById("complemento").value = data.complemento;
+        document.getElementById("cidade").value = data.localidade;
+        document.getElementById("uf").value = data.uf;
+        document.getElementById("ibge").value = data.ibge;
+        document.getElementById("gia").value = data.gia;
+        document.getElementById("ddd").value = data.ddd;
+        document.getElementById("siafi").value = data.siafi;
+    } 
+
+ 
+ 
+</script> 
+
+</html> 
